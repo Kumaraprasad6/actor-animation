@@ -8,6 +8,7 @@ enum AnimationCategory: String, CaseIterable, Identifiable, Hashable {
     case timer
     case gradient
     case effects
+    case threeD
 
     var id: String { rawValue }
 
@@ -20,6 +21,7 @@ enum AnimationCategory: String, CaseIterable, Identifiable, Hashable {
         case .timer: "Timer"
         case .gradient: "Gradient"
         case .effects: "Effects"
+        case .threeD: "3D"
         }
     }
 
@@ -32,6 +34,7 @@ enum AnimationCategory: String, CaseIterable, Identifiable, Hashable {
         case .timer: "clock.arrow.circlepath"
         case .gradient: "paintpalette"
         case .effects: "sparkles"
+        case .threeD: "cube.transparent"
         }
     }
 }

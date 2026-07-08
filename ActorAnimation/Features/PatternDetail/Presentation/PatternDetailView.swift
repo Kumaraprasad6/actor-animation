@@ -103,6 +103,12 @@ struct PatternDetailView: View {
             LiquidChromePattern(sliderValue: viewModel.sliderValue)
         case "fire-smoke":
             FireSmokeParticlesPattern(toggleValue: viewModel.toggleValue)
+        case "cube-3d":
+            Cube3DRotationPattern(sliderValue: viewModel.sliderValue)
+        case "parallax-depth":
+            ParallaxDepthPattern(sliderValue: viewModel.sliderValue)
+        case "perspective-tilt":
+            PerspectiveTiltPattern(dragOffset: $viewModel.dragOffset)
         default:
             Text("Not implemented")
                 .foregroundStyle(AppColors.secondaryText)
