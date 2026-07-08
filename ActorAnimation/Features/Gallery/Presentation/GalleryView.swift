@@ -24,6 +24,16 @@ struct GalleryView: View {
             .background(AppColors.background)
             .navigationTitle("Animations")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        HapticsManager.shared.selection()
+                        coordinator.navigateToSettings()
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
             .navigationDestination(for: GalleryRoute.self) { route in
                 switch route {
                 case .detail(let patternID):
@@ -32,6 +42,8 @@ struct GalleryView: View {
                     } else {
                         Text("Pattern not found")
                     }
+                case .settings:
+                    SettingsView()
                 }
             }
         }
