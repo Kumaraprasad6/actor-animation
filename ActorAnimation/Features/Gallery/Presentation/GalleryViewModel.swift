@@ -6,9 +6,19 @@ import Combine
 final class GalleryViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var selectedCategory: AnimationCategory?
+    @Published var showFavoritesOnly: Bool = false
+    @Published var favoritesStore: FavoritesStore
+
+    init(favoritesStore: FavoritesStore = .shared) {
+        self.favoritesStore = favoritesStore
+    }
 
     var filteredPatterns: [AnimationPattern] {
-        PatternCatalog.filter(searchText: searchText, category: selectedCategory)
+        var results = PatternCatalog.filter(searchText: searchText, category: selectedCategory)
+        if showFavoritesOnly {
+            results = results.filter { favoritesStore.isFavorite($0.id) }
+        }
+        return results
     }
 
     var categories: [AnimationCategory] {
@@ -19,5 +29,9 @@ final class GalleryViewModel: ObservableObject {
 
     func selectCategory(_ category: AnimationCategory?) {
         selectedCategory = (selectedCategory == category) ? nil : category
+    }
+
+    func toggleFavoritesFilter() {
+        showFavoritesOnly.toggle()
     }
 }
