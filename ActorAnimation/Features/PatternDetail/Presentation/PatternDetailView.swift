@@ -3,6 +3,7 @@ import SwiftUI
 struct PatternDetailView: View {
     let pattern: AnimationPattern
     @StateObject private var viewModel: PatternDetailViewModel
+    @StateObject private var favoritesStore = FavoritesStore.shared
 
     init(pattern: AnimationPattern) {
         self.pattern = pattern
@@ -23,10 +24,20 @@ struct PatternDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    viewModel.resetControls()
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
+                HStack {
+                    Button {
+                        withAnimation(AnimationCurves.springBouncy) {
+                            favoritesStore.toggle(pattern.id)
+                        }
+                    } label: {
+                        Image(systemName: favoritesStore.isFavorite(pattern.id) ? "heart.fill" : "heart")
+                            .foregroundStyle(favoritesStore.isFavorite(pattern.id) ? .red : AppColors.primaryText)
+                    }
+                    Button {
+                        viewModel.resetControls()
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
                 }
             }
         }

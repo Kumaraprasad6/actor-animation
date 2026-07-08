@@ -207,4 +207,60 @@ final class ActorAnimationTests: XCTestCase {
         let vm = PatternDetailViewModel(pattern: pattern)
         XCTAssertEqual(vm.pattern.id, "breathing")
     }
+
+    func testFavoritesStoreToggle() {
+        let store = FavoritesStore.shared
+        store.clear()
+        XCTAssertFalse(store.isFavorite("scale-pulse"))
+        store.toggle("scale-pulse")
+        XCTAssertTrue(store.isFavorite("scale-pulse"))
+        store.toggle("scale-pulse")
+        XCTAssertFalse(store.isFavorite("scale-pulse"))
+    }
+
+    func testFavoritesStoreAddRemove() {
+        let store = FavoritesStore.shared
+        store.clear()
+        store.add("rotate")
+        XCTAssertTrue(store.isFavorite("rotate"))
+        store.remove("rotate")
+        XCTAssertFalse(store.isFavorite("rotate"))
+    }
+
+    func testFavoritesStoreClear() {
+        let store = FavoritesStore.shared
+        store.add("scale-pulse")
+        store.add("rotate")
+        store.clear()
+        XCTAssertTrue(store.favoriteIDs.isEmpty)
+    }
+
+    func testGalleryViewModelFavoritesFilter() {
+        let store = FavoritesStore.shared
+        store.clear()
+        store.add("scale-pulse")
+        let vm = GalleryViewModel(favoritesStore: store)
+        XCTAssertFalse(vm.showFavoritesOnly)
+        vm.toggleFavoritesFilter()
+        XCTAssertTrue(vm.showFavoritesOnly)
+        XCTAssertEqual(vm.filteredPatterns.count, 1)
+        XCTAssertEqual(vm.filteredPatterns.first?.id, "scale-pulse")
+        vm.toggleFavoritesFilter()
+        XCTAssertFalse(vm.showFavoritesOnly)
+        XCTAssertEqual(vm.filteredPatterns.count, 24)
+        store.clear()
+    }
+
+    func testGalleryViewModelFavoritesWithSearch() {
+        let store = FavoritesStore.shared
+        store.clear()
+        store.add("scale-pulse")
+        store.add("rotate")
+        let vm = GalleryViewModel(favoritesStore: store)
+        vm.toggleFavoritesFilter()
+        vm.searchText = "scale"
+        XCTAssertEqual(vm.filteredPatterns.count, 1)
+        XCTAssertEqual(vm.filteredPatterns.first?.id, "scale-pulse")
+        store.clear()
+    }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 struct GalleryView: View {
     @StateObject private var viewModel = GalleryViewModel()
     @StateObject private var coordinator = GalleryCoordinator()
+    @StateObject private var favoritesStore = FavoritesStore.shared
     @State private var selectedCategoryId: AnimationCategory.ID?
 
     private let columns: [GridItem] = [
@@ -61,6 +62,20 @@ struct GalleryView: View {
     private var categoryChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
+                Button {
+                    viewModel.toggleFavoritesFilter()
+                } label: {
+                    Label("Favorites", systemImage: viewModel.showFavoritesOnly ? "heart.fill" : "heart")
+                        .font(.subheadline.weight(.medium))
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(
+                            viewModel.showFavoritesOnly ? Color.red.opacity(0.15) : AppColors.secondaryBackground
+                        )
+                        .foregroundStyle(viewModel.showFavoritesOnly ? .red : AppColors.primaryText)
+                        .clipShape(Capsule())
+                }
+
                 ForEach(viewModel.categories) { category in
                     let isSelected = viewModel.selectedCategory == category
                     Button {
@@ -88,7 +103,7 @@ struct GalleryView: View {
                 Button {
                     coordinator.navigateToDetail(patternID: pattern.id)
                 } label: {
-                    PatternCard(pattern: pattern)
+                    PatternCard(pattern: pattern, isFavorite: favoritesStore.isFavorite(pattern.id))
                 }
                 .buttonStyle(.plain)
             }
@@ -99,6 +114,7 @@ struct GalleryView: View {
 
 private struct PatternCard: View {
     let pattern: AnimationPattern
+    let isFavorite: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -108,6 +124,18 @@ private struct PatternCard: View {
                 Image(systemName: pattern.category.systemImageName)
                     .font(.system(size: 32, weight: .light))
                     .foregroundStyle(pattern.category.color)
+                if isFavorite {
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Image(systemName: "heart.fill")
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                                .padding(8)
+                        }
+                        Spacer()
+                    }
+                }
             }
             .frame(height: 100)
 
