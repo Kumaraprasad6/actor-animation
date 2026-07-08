@@ -63,6 +63,7 @@ struct GalleryView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
                 Button {
+                    HapticsManager.shared.selection()
                     viewModel.toggleFavoritesFilter()
                 } label: {
                     Label("Favorites", systemImage: viewModel.showFavoritesOnly ? "heart.fill" : "heart")
@@ -79,6 +80,7 @@ struct GalleryView: View {
                 ForEach(viewModel.categories) { category in
                     let isSelected = viewModel.selectedCategory == category
                     Button {
+                        HapticsManager.shared.selection()
                         viewModel.selectCategory(category)
                     } label: {
                         Label(category.title, systemImage: category.systemImageName)

@@ -263,4 +263,35 @@ final class ActorAnimationTests: XCTestCase {
         XCTAssertEqual(vm.filteredPatterns.first?.id, "scale-pulse")
         store.clear()
     }
+
+    func testHapticsManagerEnabled() {
+        let manager = HapticsManager.shared
+        manager.setEnabled(true)
+        manager.impact(for: .tap)
+        manager.impact(for: .slider)
+        manager.impact(for: .toggle)
+        manager.impact(for: .drag)
+        manager.impact(for: .pinch)
+        manager.impact(for: .swipe)
+        manager.selection()
+        manager.success()
+        manager.warning()
+    }
+
+    func testHapticsManagerDisabled() {
+        let manager = HapticsManager.shared
+        manager.setEnabled(false)
+        manager.impact(for: .tap)
+        manager.impact(for: .slider)
+        manager.selection()
+        manager.setEnabled(true)
+    }
+
+    func testHapticsManagerToggleEnabledState() {
+        let manager = HapticsManager.shared
+        manager.setEnabled(false)
+        manager.impact(for: .tap)
+        manager.setEnabled(true)
+        manager.impact(for: .tap)
+    }
 }

@@ -25,6 +25,7 @@ struct InputControlPanel: View {
                 switch inputType {
                 case .tap:
                     Button {
+                        HapticsManager.shared.impact(for: .tap)
                         tapTrigger += 1
                     } label: {
                         Label("Tap to Trigger", systemImage: "hand.tap.fill")
@@ -37,7 +38,11 @@ struct InputControlPanel: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Value: \(String(format: "%.2f", sliderValue))")
                             .font(AppTypography.mono())
-                        Slider(value: $sliderValue, in: 0...1)
+                        Slider(value: $sliderValue, in: 0...1) { onEditingChanged in
+                            if onEditingChanged {
+                                HapticsManager.shared.impact(for: .slider)
+                            }
+                        }
                     }
 
                 case .toggle:
@@ -46,6 +51,9 @@ struct InputControlPanel: View {
                     }
                     .toggleStyle(.switch)
                     .tint(AppColors.accent)
+                    .onChange(of: toggleValue) { _, _ in
+                        HapticsManager.shared.impact(for: .toggle)
+                    }
 
                 case .drag, .pinch:
                     VStack(spacing: 12) {
@@ -55,6 +63,7 @@ struct InputControlPanel: View {
                             Label("Pinch to zoom the object on the canvas", systemImage: "hand.pinch.fill")
                         }
                         Button("Reset") {
+                            HapticsManager.shared.impact(for: inputType)
                             withAnimation(AnimationCurves.springBouncy) {
                                 dragOffset = .zero
                                 pinchScale = 1.0

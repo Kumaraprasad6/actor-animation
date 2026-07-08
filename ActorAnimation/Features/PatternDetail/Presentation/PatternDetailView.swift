@@ -26,6 +26,7 @@ struct PatternDetailView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack {
                     Button {
+                        HapticsManager.shared.impact(for: .tap)
                         withAnimation(AnimationCurves.springBouncy) {
                             favoritesStore.toggle(pattern.id)
                         }
@@ -34,6 +35,7 @@ struct PatternDetailView: View {
                             .foregroundStyle(favoritesStore.isFavorite(pattern.id) ? .red : AppColors.primaryText)
                     }
                     Button {
+                        HapticsManager.shared.selection()
                         viewModel.resetControls()
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
