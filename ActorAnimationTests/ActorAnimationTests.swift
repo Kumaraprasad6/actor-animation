@@ -4,8 +4,8 @@ import XCTest
 @MainActor
 final class ActorAnimationTests: XCTestCase {
 
-    func testPatternCatalogContains15Patterns() {
-        XCTAssertEqual(PatternCatalog.patterns.count, 15)
+    func testPatternCatalogContains19Patterns() {
+        XCTAssertEqual(PatternCatalog.patterns.count, 19)
     }
 
     func testPatternCatalogIDsAreUnique() {
@@ -42,9 +42,34 @@ final class ActorAnimationTests: XCTestCase {
         XCTAssertEqual(results.first?.id, "progress-arc")
     }
 
+    func testFilterGradientCategory() {
+        let results = PatternCatalog.filter(searchText: "", category: .gradient)
+        XCTAssertEqual(results.count, 4)
+        XCTAssertTrue(results.allSatisfy { $0.category == .gradient })
+    }
+
+    func testGradientPatternLookup() {
+        let mesh = PatternCatalog.pattern(forID: "gradient-mesh")
+        XCTAssertNotNil(mesh)
+        XCTAssertEqual(mesh?.category, .gradient)
+        XCTAssertEqual(mesh?.inputType, .slider)
+
+        let hue = PatternCatalog.pattern(forID: "hue-rainbow")
+        XCTAssertNotNil(hue)
+        XCTAssertEqual(hue?.inputType, .slider)
+
+        let conic = PatternCatalog.pattern(forID: "conic-rotation")
+        XCTAssertNotNil(conic)
+        XCTAssertEqual(conic?.inputType, .slider)
+
+        let color = PatternCatalog.pattern(forID: "color-transition")
+        XCTAssertNotNil(color)
+        XCTAssertEqual(color?.inputType, .toggle)
+    }
+
     func testEmptySearchReturnsAll() {
         let results = PatternCatalog.filter(searchText: "", category: nil)
-        XCTAssertEqual(results.count, 15)
+        XCTAssertEqual(results.count, 19)
     }
 
     func testAnimationCategoryHasUniqueTitles() {
@@ -66,7 +91,7 @@ final class ActorAnimationTests: XCTestCase {
         let vm = GalleryViewModel()
         XCTAssertTrue(vm.searchText.isEmpty)
         XCTAssertNil(vm.selectedCategory)
-        XCTAssertEqual(vm.filteredPatterns.count, 15)
+        XCTAssertEqual(vm.filteredPatterns.count, 19)
     }
 
     func testGalleryViewModelSelectCategory() {
@@ -76,18 +101,31 @@ final class ActorAnimationTests: XCTestCase {
         XCTAssertEqual(vm.filteredPatterns.count, 3)
     }
 
+    func testGalleryViewModelSelectGradientCategory() {
+        let vm = GalleryViewModel()
+        vm.selectCategory(.gradient)
+        XCTAssertEqual(vm.selectedCategory, .gradient)
+        XCTAssertEqual(vm.filteredPatterns.count, 4)
+    }
+
     func testGalleryViewModelToggleOffCategory() {
         let vm = GalleryViewModel()
         vm.selectCategory(.shape)
         vm.selectCategory(.shape)
         XCTAssertNil(vm.selectedCategory)
-        XCTAssertEqual(vm.filteredPatterns.count, 15)
+        XCTAssertEqual(vm.filteredPatterns.count, 19)
     }
 
     func testGalleryViewModelSearchTextFilters() {
         let vm = GalleryViewModel()
         vm.searchText = "card"
         XCTAssertEqual(vm.filteredPatterns.count, 2)
+    }
+
+    func testGalleryViewModelSearchGradient() {
+        let vm = GalleryViewModel()
+        vm.searchText = "gradient"
+        XCTAssertEqual(vm.filteredPatterns.count, 1)
     }
 
     func testPatternDetailViewModelInitialDefaults() {

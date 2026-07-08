@@ -36,6 +36,15 @@ enum PatternCatalog {
               category: .timer, inputType: .tap, patternKey: "staggered-list"),
         .init(id: "marquee", title: "Marquee", subtitle: "Continuous horizontal scroll",
               category: .timer, inputType: .toggle, patternKey: "marquee"),
+
+        .init(id: "gradient-mesh", title: "Gradient Mesh", subtitle: "Animated multi-color mesh flow",
+              category: .gradient, inputType: .slider, patternKey: "gradient-mesh"),
+        .init(id: "hue-rainbow", title: "Hue Rainbow Flow", subtitle: "Rotating angular rainbow gradient",
+              category: .gradient, inputType: .slider, patternKey: "hue-rainbow"),
+        .init(id: "conic-rotation", title: "Conic Rotation", subtitle: "Spinning conic gradient",
+              category: .gradient, inputType: .slider, patternKey: "conic-rotation"),
+        .init(id: "color-transition", title: "Color Transition", subtitle: "Warm-to-cool gradient on toggle",
+              category: .gradient, inputType: .toggle, patternKey: "color-transition"),
     ]
 
     static func pattern(forID id: String) -> AnimationPattern? {

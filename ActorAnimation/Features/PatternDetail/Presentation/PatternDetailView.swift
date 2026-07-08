@@ -85,6 +85,14 @@ struct PatternDetailView: View {
             StaggeredListPattern(tapTrigger: viewModel.tapTrigger)
         case "marquee":
             MarqueePattern(toggleValue: viewModel.toggleValue)
+        case "gradient-mesh":
+            AnimatedGradientMeshPattern(sliderValue: viewModel.sliderValue)
+        case "hue-rainbow":
+            HueRainbowFlowPattern(sliderValue: viewModel.sliderValue)
+        case "conic-rotation":
+            ConicRotationGradientPattern(sliderValue: viewModel.sliderValue)
+        case "color-transition":
+            ColorTransitionGradientPattern(toggleValue: viewModel.toggleValue)
         default:
             Text("Not implemented")
                 .foregroundStyle(AppColors.secondaryText)
