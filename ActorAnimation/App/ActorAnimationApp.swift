@@ -9,9 +9,23 @@ import SwiftUI
 
 @main
 struct ActorAnimationApp: App {
+    @StateObject private var settings = SettingsStore.shared
+
     var body: some Scene {
         WindowGroup {
             GalleryView()
+                .preferredColorScheme(settings.colorScheme.swiftUIColorScheme)
+                .environmentObject(settings)
+        }
+    }
+}
+
+extension AppColorScheme {
+    var swiftUIColorScheme: ColorScheme? {
+        switch self {
+        case .system: nil
+        case .light: .light
+        case .dark: .dark
         }
     }
 }

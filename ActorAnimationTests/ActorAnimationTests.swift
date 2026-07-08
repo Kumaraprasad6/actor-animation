@@ -294,4 +294,47 @@ final class ActorAnimationTests: XCTestCase {
         manager.setEnabled(true)
         manager.impact(for: .tap)
     }
+
+    func testSettingsStoreDefaults() {
+        let store = SettingsStore.shared
+        XCTAssertEqual(store.defaultDuration, 0.4, accuracy: 0.01)
+        XCTAssertTrue(store.hapticsEnabled)
+    }
+
+    func testSettingsStoreHapticsToggle() {
+        let store = SettingsStore.shared
+        let original = store.hapticsEnabled
+        store.hapticsEnabled = false
+        XCTAssertFalse(store.hapticsEnabled)
+        store.hapticsEnabled = true
+        XCTAssertTrue(store.hapticsEnabled)
+        store.hapticsEnabled = original
+    }
+
+    func testSettingsStoreColorScheme() {
+        let store = SettingsStore.shared
+        let original = store.colorScheme
+        store.colorScheme = .dark
+        XCTAssertEqual(store.colorScheme, .dark)
+        store.colorScheme = .light
+        XCTAssertEqual(store.colorScheme, .light)
+        store.colorScheme = .system
+        XCTAssertEqual(store.colorScheme, .system)
+        store.colorScheme = original
+    }
+
+    func testSettingsStoreDefaultDuration() {
+        let store = SettingsStore.shared
+        let original = store.defaultDuration
+        store.defaultDuration = 1.5
+        XCTAssertEqual(store.defaultDuration, 1.5, accuracy: 0.01)
+        store.defaultDuration = original
+    }
+
+    func testAppColorSchemeValues() {
+        XCTAssertEqual(AppColorScheme.allCases.count, 3)
+        XCTAssertEqual(AppColorScheme.system.title, "System")
+        XCTAssertEqual(AppColorScheme.light.title, "Light")
+        XCTAssertEqual(AppColorScheme.dark.title, "Dark")
+    }
 }
