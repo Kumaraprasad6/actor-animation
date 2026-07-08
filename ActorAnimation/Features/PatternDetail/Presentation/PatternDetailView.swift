@@ -93,6 +93,16 @@ struct PatternDetailView: View {
             ConicRotationGradientPattern(sliderValue: viewModel.sliderValue)
         case "color-transition":
             ColorTransitionGradientPattern(toggleValue: viewModel.toggleValue)
+        case "confetti-burst":
+            ConfettiBurstPattern(tapTrigger: viewModel.tapTrigger)
+        case "loading-spinner":
+            LoadingSpinnerPattern(toggleValue: viewModel.toggleValue)
+        case "shimmer":
+            ShimmerEffectPattern(toggleValue: viewModel.toggleValue)
+        case "liquid-chrome":
+            LiquidChromePattern(sliderValue: viewModel.sliderValue)
+        case "fire-smoke":
+            FireSmokeParticlesPattern(toggleValue: viewModel.toggleValue)
         default:
             Text("Not implemented")
                 .foregroundStyle(AppColors.secondaryText)

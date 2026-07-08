@@ -45,6 +45,17 @@ enum PatternCatalog {
               category: .gradient, inputType: .slider, patternKey: "conic-rotation"),
         .init(id: "color-transition", title: "Color Transition", subtitle: "Warm-to-cool gradient on toggle",
               category: .gradient, inputType: .toggle, patternKey: "color-transition"),
+
+        .init(id: "confetti-burst", title: "Confetti Burst", subtitle: "Multi-color confetti explosion on tap",
+              category: .effects, inputType: .tap, patternKey: "confetti-burst"),
+        .init(id: "loading-spinner", title: "Loading Spinner", subtitle: "Dotted spinner with fade trail",
+              category: .effects, inputType: .toggle, patternKey: "loading-spinner"),
+        .init(id: "shimmer", title: "Shimmer", subtitle: "Skeleton loading shimmer effect",
+              category: .effects, inputType: .toggle, patternKey: "shimmer"),
+        .init(id: "liquid-chrome", title: "Liquid Chrome", subtitle: "Metallic gradient with blur depth",
+              category: .effects, inputType: .slider, patternKey: "liquid-chrome"),
+        .init(id: "fire-smoke", title: "Fire & Smoke", subtitle: "Canvas particle fire and smoke",
+              category: .effects, inputType: .toggle, patternKey: "fire-smoke"),
     ]
 
     static func pattern(forID id: String) -> AnimationPattern? {

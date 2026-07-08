@@ -4,8 +4,8 @@ import XCTest
 @MainActor
 final class ActorAnimationTests: XCTestCase {
 
-    func testPatternCatalogContains19Patterns() {
-        XCTAssertEqual(PatternCatalog.patterns.count, 19)
+    func testPatternCatalogContains24Patterns() {
+        XCTAssertEqual(PatternCatalog.patterns.count, 24)
     }
 
     func testPatternCatalogIDsAreUnique() {
@@ -67,9 +67,38 @@ final class ActorAnimationTests: XCTestCase {
         XCTAssertEqual(color?.inputType, .toggle)
     }
 
+    func testFilterEffectsCategory() {
+        let results = PatternCatalog.filter(searchText: "", category: .effects)
+        XCTAssertEqual(results.count, 5)
+        XCTAssertTrue(results.allSatisfy { $0.category == .effects })
+    }
+
+    func testEffectsPatternLookup() {
+        let confetti = PatternCatalog.pattern(forID: "confetti-burst")
+        XCTAssertNotNil(confetti)
+        XCTAssertEqual(confetti?.category, .effects)
+        XCTAssertEqual(confetti?.inputType, .tap)
+
+        let spinner = PatternCatalog.pattern(forID: "loading-spinner")
+        XCTAssertNotNil(spinner)
+        XCTAssertEqual(spinner?.inputType, .toggle)
+
+        let shimmer = PatternCatalog.pattern(forID: "shimmer")
+        XCTAssertNotNil(shimmer)
+        XCTAssertEqual(shimmer?.inputType, .toggle)
+
+        let chrome = PatternCatalog.pattern(forID: "liquid-chrome")
+        XCTAssertNotNil(chrome)
+        XCTAssertEqual(chrome?.inputType, .slider)
+
+        let fire = PatternCatalog.pattern(forID: "fire-smoke")
+        XCTAssertNotNil(fire)
+        XCTAssertEqual(fire?.inputType, .toggle)
+    }
+
     func testEmptySearchReturnsAll() {
         let results = PatternCatalog.filter(searchText: "", category: nil)
-        XCTAssertEqual(results.count, 19)
+        XCTAssertEqual(results.count, 24)
     }
 
     func testAnimationCategoryHasUniqueTitles() {
@@ -91,7 +120,7 @@ final class ActorAnimationTests: XCTestCase {
         let vm = GalleryViewModel()
         XCTAssertTrue(vm.searchText.isEmpty)
         XCTAssertNil(vm.selectedCategory)
-        XCTAssertEqual(vm.filteredPatterns.count, 19)
+        XCTAssertEqual(vm.filteredPatterns.count, 24)
     }
 
     func testGalleryViewModelSelectCategory() {
@@ -113,7 +142,7 @@ final class ActorAnimationTests: XCTestCase {
         vm.selectCategory(.shape)
         vm.selectCategory(.shape)
         XCTAssertNil(vm.selectedCategory)
-        XCTAssertEqual(vm.filteredPatterns.count, 19)
+        XCTAssertEqual(vm.filteredPatterns.count, 24)
     }
 
     func testGalleryViewModelSearchTextFilters() {
