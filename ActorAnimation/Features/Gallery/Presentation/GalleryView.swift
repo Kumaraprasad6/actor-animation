@@ -144,6 +144,7 @@ extension AnimationCategory {
         case .timer: .indigo
         case .gradient: .pink
         case .effects: .green
+        case .threeD: .cyan
         }
     }
 }

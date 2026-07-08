@@ -45,7 +45,6 @@ enum PatternCatalog {
               category: .gradient, inputType: .slider, patternKey: "conic-rotation"),
         .init(id: "color-transition", title: "Color Transition", subtitle: "Warm-to-cool gradient on toggle",
               category: .gradient, inputType: .toggle, patternKey: "color-transition"),
-
         .init(id: "confetti-burst", title: "Confetti Burst", subtitle: "Multi-color confetti explosion on tap",
               category: .effects, inputType: .tap, patternKey: "confetti-burst"),
         .init(id: "loading-spinner", title: "Loading Spinner", subtitle: "Dotted spinner with fade trail",
@@ -56,6 +55,12 @@ enum PatternCatalog {
               category: .effects, inputType: .slider, patternKey: "liquid-chrome"),
         .init(id: "fire-smoke", title: "Fire & Smoke", subtitle: "Canvas particle fire and smoke",
               category: .effects, inputType: .toggle, patternKey: "fire-smoke"),
+        .init(id: "cube-3d", title: "3D Cube Rotation", subtitle: "Multi-axis 3D cube with rotation3DEffect",
+              category: .threeD, inputType: .slider, patternKey: "cube-3d"),
+        .init(id: "parallax-depth", title: "Parallax Depth", subtitle: "Layered depth with offset and scale",
+              category: .threeD, inputType: .slider, patternKey: "parallax-depth"),
+        .init(id: "perspective-tilt", title: "Perspective Tilt", subtitle: "Drag-driven 3D perspective rotation",
+              category: .threeD, inputType: .drag, patternKey: "perspective-tilt"),
     ]
 
     static func pattern(forID id: String) -> AnimationPattern? {
