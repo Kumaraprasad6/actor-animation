@@ -1,9 +1,11 @@
 import SwiftUI
+import ReplayKit
 
 struct PatternDetailView: View {
     let pattern: AnimationPattern
     @StateObject private var viewModel: PatternDetailViewModel
     @StateObject private var favoritesStore = FavoritesStore.shared
+    @StateObject private var videoExporter = VideoExportManager()
 
     init(pattern: AnimationPattern) {
         self.pattern = pattern
@@ -24,7 +26,8 @@ struct PatternDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                HStack {
+                HStack(spacing: 4) {
+                    recordButton
                     Button {
                         HapticsManager.shared.impact(for: .tap)
                         withAnimation(AnimationCurves.springBouncy) {
@@ -43,6 +46,99 @@ struct PatternDetailView: View {
                 }
             }
         }
+        .overlay(alignment: .top) {
+            if videoExporter.isRecording {
+                recordingBanner
+            }
+        }
+        .overlay {
+            if videoExporter.isProcessing {
+                processingOverlay
+            }
+        }
+        .alert("Recording Saved", isPresented: completedBinding) {
+            Button("OK") { videoExporter.reset() }
+        } message: {
+            Text("Your recording has been saved or shared from the preview screen. Check the Photos app if you saved it.")
+        }
+        .alert("Recording Error", isPresented: errorBinding) {
+            Button("OK") { videoExporter.reset() }
+        } message: {
+            Text(videoExporter.errorMessage ?? "An unknown error occurred.")
+        }
+    }
+
+    private var recordButton: some View {
+        Button {
+            HapticsManager.shared.impact(for: .tap)
+            if videoExporter.isRecording {
+                videoExporter.stopRecording()
+            } else {
+                videoExporter.startRecording()
+            }
+        } label: {
+            if videoExporter.isProcessing {
+                ProgressView()
+                    .frame(width: 20, height: 20)
+            } else {
+                Image(systemName: videoExporter.isRecording ? "stop.circle.fill" : "record.circle")
+                    .foregroundStyle(videoExporter.isRecording ? .red : AppColors.primaryText)
+            }
+        }
+    }
+
+    private var recordingBanner: some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(.red)
+                .frame(width: 8, height: 8)
+                .opacity(0.8)
+                .scaleEffect(videoExporter.isRecording ? 1.3 : 0.7)
+                .animation(
+                    .easeInOut(duration: 0.8).repeatForever(autoreverses: true),
+                    value: videoExporter.isRecording
+                )
+            Text("Recording…")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.white)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .background(.red.opacity(0.9))
+        .clipShape(Capsule())
+        .padding(.top, 4)
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+
+    private var processingOverlay: some View {
+        VStack(spacing: 16) {
+            ProgressView()
+                .scaleEffect(1.5)
+            Text("Processing recording…")
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(AppColors.primaryText)
+        }
+        .padding(32)
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .transition(.opacity)
+    }
+
+    private var completedBinding: Binding<Bool> {
+        Binding(
+            get: { videoExporter.state == .completed },
+            set: { if !$0 { videoExporter.reset() } }
+        )
+    }
+
+    private var errorBinding: Binding<Bool> {
+        Binding(
+            get: {
+                if case .failed = videoExporter.state { return true }
+                return false
+            },
+            set: { if !$0 { videoExporter.reset() } }
+        )
     }
 
     private var headerSection: some View {
