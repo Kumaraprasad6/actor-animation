@@ -247,7 +247,7 @@ final class ActorAnimationTests: XCTestCase {
         XCTAssertEqual(vm.filteredPatterns.first?.id, "scale-pulse")
         vm.toggleFavoritesFilter()
         XCTAssertFalse(vm.showFavoritesOnly)
-        XCTAssertEqual(vm.filteredPatterns.count, 24)
+        XCTAssertEqual(vm.filteredPatterns.count, 27)
         store.clear()
     }
 
@@ -336,5 +336,13 @@ final class ActorAnimationTests: XCTestCase {
         XCTAssertEqual(AppColorScheme.system.title, "System")
         XCTAssertEqual(AppColorScheme.light.title, "Light")
         XCTAssertEqual(AppColorScheme.dark.title, "Dark")
+    }
+    
+    func testVideoExportManagerInitialState() {
+        let exporter = VideoExportManager()
+        XCTAssertEqual(exporter.state, .idle)
+        XCTAssertFalse(exporter.isRecording)
+        XCTAssertFalse(exporter.isProcessing)
+        XCTAssertNil(exporter.errorMessage)
     }
 }
