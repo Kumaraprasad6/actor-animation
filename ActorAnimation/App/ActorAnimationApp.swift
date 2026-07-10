@@ -13,10 +13,15 @@ struct ActorAnimationApp: App {
 
     var body: some Scene {
         WindowGroup {
-            GalleryView()
-                .preferredColorScheme(settings.colorScheme.swiftUIColorScheme)
-                .environmentObject(settings)
+            if settings.hasCompletedOnboarding {
+                GalleryView()
+                    .preferredColorScheme(settings.colorScheme.swiftUIColorScheme)
+            } else {
+                OnboardingView()
+                    .preferredColorScheme(settings.colorScheme.swiftUIColorScheme)
+            }
         }
+        .environmentObject(settings)
     }
 }
 
