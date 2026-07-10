@@ -2,10 +2,12 @@ import SwiftUI
 import ActorAnimationCore
 
 struct GalleryView: View {
+    @Environment(\.horizontalSizeClass) private var sizeClass
     @StateObject private var viewModel = GalleryViewModel()
     @StateObject private var coordinator = GalleryCoordinator()
     @StateObject private var favoritesStore = FavoritesStore.shared
-    @State private var selectedCategoryId: AnimationCategory.ID?
+    @State private var selectedPattern: AnimationPattern?
+    @State private var showSettings = false
 
     private let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
@@ -13,42 +15,80 @@ struct GalleryView: View {
     ]
 
     var body: some View {
+        if sizeClass == .regular {
+            splitViewLayout
+        } else {
+            stackLayout
+        }
+    }
+
+    private var splitViewLayout: some View {
+        NavigationSplitView {
+            galleryContent
+                .navigationSplitViewColumnWidth(min: 320, ideal: 360, max: 420)
+        } detail: {
+            if let selectedPattern {
+                PatternDetailView(pattern: selectedPattern)
+            } else {
+                ContentUnavailableView(
+                    "Select a Pattern",
+                    systemImage: "sparkles",
+                    description: Text("Choose an animation from the gallery to preview.")
+                )
+            }
+        }
+        .sheet(isPresented: $showSettings) {
+            NavigationStack {
+                SettingsView()
+            }
+        }
+    }
+
+    private var stackLayout: some View {
         NavigationStack(path: $coordinator.path) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    searchBar
-                    categoryChips
-                    patternGrid
-                }
-                .padding(.vertical)
-            }
-            .background(AppColors.background)
-            .navigationTitle("Animations")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        HapticsManager.shared.selection()
-                        coordinator.navigateToSettings()
-                    } label: {
-                        Image(systemName: "gearshape")
+            galleryContent
+                .navigationDestination(for: GalleryRoute.self) { route in
+                    switch route {
+                    case .detail(let patternID):
+                        if let pattern = PatternCatalog.pattern(forID: patternID) {
+                            PatternDetailView(pattern: pattern)
+                        } else {
+                            Text("Pattern not found")
+                        }
+                    case .settings:
+                        SettingsView()
                     }
                 }
+        }
+        .environmentObject(coordinator)
+    }
+
+    private var galleryContent: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                searchBar
+                categoryChips
+                patternGrid
             }
-            .navigationDestination(for: GalleryRoute.self) { route in
-                switch route {
-                case .detail(let patternID):
-                    if let pattern = PatternCatalog.pattern(forID: patternID) {
-                        PatternDetailView(pattern: pattern)
+            .padding(.vertical)
+        }
+        .background(AppColors.background)
+        .navigationTitle("Animations")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    HapticsManager.shared.selection()
+                    if sizeClass == .regular {
+                        showSettings = true
                     } else {
-                        Text("Pattern not found")
+                        coordinator.navigateToSettings()
                     }
-                case .settings:
-                    SettingsView()
+                } label: {
+                    Image(systemName: "gearshape")
                 }
             }
         }
-        .environmentObject(coordinator)
     }
 
     private var searchBar: some View {
@@ -116,9 +156,18 @@ struct GalleryView: View {
         LazyVGrid(columns: columns, spacing: 16) {
             ForEach(viewModel.filteredPatterns) { pattern in
                 Button {
-                    coordinator.navigateToDetail(patternID: pattern.id)
+                    HapticsManager.shared.selection()
+                    if sizeClass == .regular {
+                        selectedPattern = pattern
+                    } else {
+                        coordinator.navigateToDetail(patternID: pattern.id)
+                    }
                 } label: {
-                    PatternCard(pattern: pattern, isFavorite: favoritesStore.isFavorite(pattern.id))
+                    PatternCard(
+                        pattern: pattern,
+                        isFavorite: favoritesStore.isFavorite(pattern.id),
+                        isSelected: sizeClass == .regular && selectedPattern == pattern
+                    )
                 }
                 .buttonStyle(.plain)
             }
@@ -130,6 +179,7 @@ struct GalleryView: View {
 private struct PatternCard: View {
     let pattern: AnimationPattern
     let isFavorite: Bool
+    let isSelected: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -174,6 +224,10 @@ private struct PatternCard: View {
         .padding(14)
         .background(AppColors.secondaryBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder(AppColors.accent.opacity(isSelected ? 1 : 0), lineWidth: 2)
+        )
     }
 }
 
