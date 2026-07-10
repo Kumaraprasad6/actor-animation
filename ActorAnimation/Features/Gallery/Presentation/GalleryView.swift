@@ -1,4 +1,5 @@
 import SwiftUI
+import ActorAnimationCore
 
 struct GalleryView: View {
     @StateObject private var viewModel = GalleryViewModel()
@@ -173,21 +174,6 @@ private struct PatternCard: View {
         .padding(14)
         .background(AppColors.secondaryBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16))
-    }
-}
-
-extension AnimationCategory {
-    var color: Color {
-        switch self {
-        case .transform: .blue
-        case .transition: .purple
-        case .gesture: .orange
-        case .shape: .teal
-        case .timer: .indigo
-        case .gradient: .pink
-        case .effects: .green
-        case .threeD: .cyan
-        }
     }
 }
 

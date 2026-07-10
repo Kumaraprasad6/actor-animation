@@ -1,5 +1,7 @@
 import SwiftUI
 import ReplayKit
+import ActorAnimationCore
+import ActorAnimationPatterns
 
 struct PatternDetailView: View {
     let pattern: AnimationPattern
