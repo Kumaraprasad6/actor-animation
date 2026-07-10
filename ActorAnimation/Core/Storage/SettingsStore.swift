@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import ActorAnimationCore
 
 @MainActor
 final class SettingsStore: ObservableObject {

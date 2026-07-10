@@ -1,4 +1,5 @@
 import SwiftUI
+import ActorAnimationCore
 
 struct SettingsView: View {
     @StateObject private var settings = SettingsStore.shared

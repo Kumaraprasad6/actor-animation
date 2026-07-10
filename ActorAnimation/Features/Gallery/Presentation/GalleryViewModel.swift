@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import ActorAnimationCore
 
 @MainActor
 final class GalleryViewModel: ObservableObject {

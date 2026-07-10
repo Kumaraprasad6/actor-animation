@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		60F269D52FFE1E4300106C45 /* ActorAnimationCore in Frameworks */ = {isa = PBXBuildFile; productRef = 60F269D22FFE1E4300106C45 /* ActorAnimationCore */; };
+		60F269D62FFE1E4300106C45 /* ActorAnimationPatterns in Frameworks */ = {isa = PBXBuildFile; productRef = 60F269D32FFE1E4300106C45 /* ActorAnimationPatterns */; };
+		60F269D72FFE1E4300106C45 /* ActorAnimationCore in Frameworks */ = {isa = PBXBuildFile; productRef = 60F269D42FFE1E4300106C45 /* ActorAnimationCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		60F269A82FFE1E4300106C45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60F269D52FFE1E4300106C45 /* ActorAnimationCore in Frameworks */,
+				60F269D62FFE1E4300106C45 /* ActorAnimationPatterns in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60F269D72FFE1E4300106C45 /* ActorAnimationCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +121,8 @@
 			);
 			name = ActorAnimation;
 			packageProductDependencies = (
+				60F269D22FFE1E4300106C45 /* ActorAnimationCore */,
+				60F269D32FFE1E4300106C45 /* ActorAnimationPatterns */,
 			);
 			productName = ActorAnimation;
 			productReference = 60F2699A2FFE1E4100106C45 /* ActorAnimation.app */;
@@ -135,6 +146,7 @@
 			);
 			name = ActorAnimationTests;
 			packageProductDependencies = (
+				60F269D42FFE1E4300106C45 /* ActorAnimationCore */,
 			);
 			productName = ActorAnimationTests;
 			productReference = 60F269A72FFE1E4300106C45 /* ActorAnimationTests.xctest */;
@@ -195,6 +207,9 @@
 			);
 			mainGroup = 60F269912FFE1E4100106C45;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				60F269D12FFE1E4300106C45 /* XCLocalSwiftPackageReference "ActorAnimationKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 60F2699B2FFE1E4100106C45 /* Products */;
 			projectDirPath = "";
@@ -570,6 +585,31 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		60F269D12FFE1E4300106C45 /* XCLocalSwiftPackageReference "ActorAnimationKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ActorAnimationKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		60F269D22FFE1E4300106C45 /* ActorAnimationCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60F269D12FFE1E4300106C45 /* XCLocalSwiftPackageReference "ActorAnimationKit" */;
+			productName = ActorAnimationCore;
+		};
+		60F269D32FFE1E4300106C45 /* ActorAnimationPatterns */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60F269D12FFE1E4300106C45 /* XCLocalSwiftPackageReference "ActorAnimationKit" */;
+			productName = ActorAnimationPatterns;
+		};
+		60F269D42FFE1E4300106C45 /* ActorAnimationCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60F269D12FFE1E4300106C45 /* XCLocalSwiftPackageReference "ActorAnimationKit" */;
+			productName = ActorAnimationCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 60F269922FFE1E4100106C45 /* Project object */;
 }
