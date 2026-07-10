@@ -19,6 +19,9 @@ final class SettingsStore: ObservableObject {
             HapticsManager.shared.setEnabled(hapticsEnabled)
         }
     }
+    @Published var hasCompletedOnboarding: Bool {
+        didSet { defaults.set(hasCompletedOnboarding, forKey: Keys.hasCompletedOnboarding) }
+    }
 
     private let defaults = UserDefaults.standard
 
@@ -26,12 +29,14 @@ final class SettingsStore: ObservableObject {
         static let colorScheme = "settings.colorScheme"
         static let defaultDuration = "settings.defaultDuration"
         static let hapticsEnabled = "settings.hapticsEnabled"
+        static let hasCompletedOnboarding = "settings.hasCompletedOnboarding"
     }
 
     private init() {
         colorScheme = AppColorScheme(rawValue: defaults.string(forKey: Keys.colorScheme) ?? "system") ?? .system
         defaultDuration = defaults.object(forKey: Keys.defaultDuration) as? Double ?? 0.4
         hapticsEnabled = defaults.object(forKey: Keys.hapticsEnabled) as? Bool ?? true
+        hasCompletedOnboarding = defaults.bool(forKey: Keys.hasCompletedOnboarding)
         HapticsManager.shared.setEnabled(hapticsEnabled)
     }
 }

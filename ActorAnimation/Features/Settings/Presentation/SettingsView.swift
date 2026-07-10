@@ -44,6 +44,15 @@ struct SettingsView: View {
             } header: {
                 Text("About")
             }
+
+            Section {
+                Button {
+                    HapticsManager.shared.selection()
+                    settings.hasCompletedOnboarding = false
+                } label: {
+                    Label("Replay Onboarding", systemImage: "arrow.clockwise")
+                }
+            }
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
